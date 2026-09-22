@@ -1,0 +1,11 @@
+import { rm, mkdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildPacket, packetToMarkdown } from '../src/core.mjs';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'); const sourceDir = path.join(root, 'sample/sources');
+const files = [['Participants', 'participants.txt', 'text'], ['Results note', 'results.md', 'md'], ['Study material', 'study-material.txt', 'text'], ['Context', 'context.html', 'html']];
+const sources = await Promise.all(files.map(async ([title, file, format], i) => ({ source_id: `SOURCE_${String(i + 1).padStart(2, '0')}`, title, format, original_name: file, content: await readFile(path.join(sourceDir, file), 'utf8') })));
+const packet = buildPacket({ answerText: await readFile(path.join(root, 'sample/answer.txt'), 'utf8'), answerReference: 'sample/answer.txt', sources, generatedAt: '2026-01-01T00:00:00.000Z' });
+const out = path.join(root, 'out/demo'); await rm(out, { recursive: true, force: true }); await mkdir(out, { recursive: true }); await writeFile(path.join(out, 'evidence-packet.json'), JSON.stringify(packet, null, 2) + '\n'); await writeFile(path.join(out, 'evidence-packet.md'), packetToMarkdown(packet));
+const roles = packet.claim_evidence_relations.map(r => r.evidence_role); for (const role of ['SUPPORTING_EVIDENCE', 'CONFLICTING_EVIDENCE', 'RELATED_BUT_INSUFFICIENT', 'NO_EVIDENCE_FOUND']) if (!roles.includes(role)) throw new Error(`Demo lacks ${role}`); if (!packet.validation.valid) throw new Error(packet.validation.errors.join('; '));
+console.log(`Demo generated ${packet.packet_id} with ${packet.claims.length} claims in out/demo`);

@@ -1,0 +1,17 @@
+{
+  "name": "evidence-packet",
+  "version": "1.0.0",
+  "description": "Local-first, inspectable claim-to-evidence packets for an answer and provided sources.",
+  "type": "module",
+  "bin": { "evidence-packet": "src/cli.mjs" },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "demo": "node scripts/demo.mjs",
+    "test": "node --test",
+    "secrets:scan": "node scripts/secrets-scan.mjs",
+    "check": "npm test && npm run demo && npm run secrets:scan"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT",
+  "keywords": ["evidence", "provenance", "citations", "local-first"]
+}
