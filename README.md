@@ -11,7 +11,7 @@ Evidence Packet is free, local-first software. It accepts an answer and only the
 Requires Node.js 20 or newer. There are no runtime dependencies.
 
 ```sh
-git clone <your-clone-url> evidence-packet
+git clone https://github.com/jinen-project/evidence-packet-v1.git evidence-packet
 cd evidence-packet
 npm install
 npm start
@@ -72,4 +72,9 @@ npm run demo
 npm run secrets:scan
 ```
 
-The repository contains no credentials, personal data, or private evidence. Included samples are synthetic and public-release safe. Before publishing, replace the placeholder clone URL above with the repository URL.
+The repository contains no credentials, personal data, or private evidence. Included samples are synthetic and public-release safe.
+
+## Related free tools
+
+- [Agent Action Preflight](https://github.com/jinen-project/agent-action-preflight-v1) — inspect a concrete local tool action before it executes.
+- [Reversibility Review](https://github.com/jinen-project/reversibility-review-v1) — inspect what returned after a local file change.
